@@ -31,7 +31,7 @@ namespace Inventory
             //Open inventory canvas when mouse down on model
             openInventoryTrigger?.onMouseDownEvent.AddListener(() => { inventoryCanvas.SetActive(true); });
 
-            ////Close inventory canvas when mouse up. Also we should check if mouse on slot, because this event fires before slot become free
+            ////Close inventory canvas when mouse up. Also we should check if mouse on slot, because this event fires before slot clear
             openInventoryTrigger?.onMouseUpEvent.AddListener(() =>
             {
                 if (!IsMouseOverSlotUI())
@@ -66,15 +66,15 @@ namespace Inventory
             // Subscribing to an event that clears the slot
             foreach (var slot in itemSlots)
             {
-                slot.freeSlotEvent.AddListener(OnFreeSlot);
+                slot.clearSlotEvent.AddListener(OnClearSlot);
             }
 
             itemAddedEvent.AddListener(SendStatisticOnAddItem);
             itemRemovedEvent.AddListener(SendStatisticOnClearSlot);
         }
 
-        // Called when slot free.
-        private void OnFreeSlot(Slot slot)
+        // Called when clear slot.
+        private void OnClearSlot(Slot slot)
         {
             var itemObject = Instantiate(slot.itemData.itemPrefab, slot.gameObject.transform.position, Quaternion.identity);
 

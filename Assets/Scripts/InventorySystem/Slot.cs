@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Inventory
 {
-    public class FreeSlotEvent : UnityEvent<Slot> { }
+    public class ClearSlotEvent : UnityEvent<Slot> { }
 
     [RequireComponent(typeof(Outline))]
     public class Slot : MonoBehaviour
@@ -21,7 +21,7 @@ namespace Inventory
 
         private Outline outline; // Highlight slot
 
-        public FreeSlotEvent freeSlotEvent = new FreeSlotEvent();
+        public ClearSlotEvent clearSlotEvent = new ClearSlotEvent();
 
         // We should use custom checking, because OnMouseUp fires only when OnMouseDown called
         private bool mouseIn = false;
@@ -38,7 +38,7 @@ namespace Inventory
             {
                 Debug.Log("Clear slot!");
 
-                freeSlotEvent?.Invoke(this);
+                clearSlotEvent?.Invoke(this);
                 isEmpty = true;
                 itemImage.gameObject.SetActive(false);
             }
@@ -77,17 +77,17 @@ namespace Inventory
 
         private void OnMouseExit()
         {
-            ClearSlotHighlight();
+            TurnOffSlotHighlight();
 
             mouseIn = false;
         }
 
         private void OnDisable()
         {
-            ClearSlotHighlight();
+            TurnOffSlotHighlight();
         }
 
-        private void ClearSlotHighlight()
+        private void TurnOffSlotHighlight()
         {
             if (outline)
             {
